@@ -20,28 +20,46 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="Brief：拟采用虚拟双目视觉，对放电等离子体通道的形态进行重建，获取其物理尺寸信息，基本原理图如图1所示。所拍摄的图像为图2所示，图像中间分隔后，进行左右视图的独立校正，分别得到图3和图4的图像。对二者进行特征点匹配，得到结果如图5所示。后续相对图像进行三维重建，不知道如何继续了，这个视差貌似不好处理。 注：上述过程采用的都是matlab 实现，利用自带的一些函数。曾尝试OPENCV，上手比较费">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三维重建">
+<meta property="og:url" content="http://yoursite.com/2020/04/06/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Brief：拟采用虚拟双目视觉，对放电等离子体通道的形态进行重建，获取其物理尺寸信息，基本原理图如图1所示。所拍摄的图像为图2所示，图像中间分隔后，进行左右视图的独立校正，分别得到图3和图4的图像。对二者进行特征点匹配，得到结果如图5所示。后续相对图像进行三维重建，不知道如何继续了，这个视差貌似不好处理。 注：上述过程采用的都是matlab 实现，利用自带的一些函数。曾尝试OPENCV，上手比较费">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/虚拟双目原理示意图.jpg">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/虚拟双目图像.jpg">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/左视图校准后图像.jpg">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/右视图校准后图像.jpg">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/左右视图特征匹配（红为左图）.png">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/观测站点和超高建筑物在三维坐标系中的投影图%20.png">
+<meta property="og:image" content="f:%5C%E7%AC%94%E8%AE%B0%5Cimg%5C%E9%97%AA%E7%94%B5%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%5C%E8%8D%89%E7%A8%BF1.jpg">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/radon.jpg">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/中心切片算法.png">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/离散数据的投影化.png">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/ART算法流程.png">
+<meta property="og:image" content="f:/笔记/img/闪电三维重建/降维计算.png">
+<meta property="og:image" content="f:%5C%E7%AC%94%E8%AE%B0%5Cimg%5C%E9%97%AA%E7%94%B5%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%5C%E5%A4%9A%E7%9B%AE%E6%A0%87%E4%BC%98%E5%8C%96ART%E7%AE%97%E6%B3%95.png">
+<meta property="article:published_time" content="2020-04-06T08:32:27.194Z">
+<meta property="article:modified_time" content="2020-04-05T13:00:05.437Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="f:/笔记/img/闪电三维重建/虚拟双目原理示意图.jpg">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/04/06/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Hexo</title>
+  <title>三维重建 | Hexo</title>
   
 
 
@@ -139,9 +157,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -157,10 +176,9 @@
       <meta itemprop="name" content="Hexo">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/06/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="post-title-link" itemprop="url">三维重建</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          三维重建
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -190,7 +208,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Brief："><a href="#Brief：" class="headerlink" title="Brief："></a>Brief：</h1><p><strong>拟采用虚拟双目视觉，对放电等离子体通道的形态进行重建，获取其物理尺寸信息</strong>，基本原理图如图1所示。所拍摄的图像为图2所示，图像中间分隔后，进行左右视图的独立校正，分别得到图3和图4的图像。对二者进行特征点匹配，得到结果如图5所示。后续<strong>相对图像进行三维重建</strong>，不知道如何继续了，这个<strong>视差</strong>貌似不好处理。</p>
+        <h1 id="Brief："><a href="#Brief：" class="headerlink" title="Brief："></a>Brief：</h1><p><strong>拟采用虚拟双目视觉，对放电等离子体通道的形态进行重建，获取其物理尺寸信息</strong>，基本原理图如图1所示。所拍摄的图像为图2所示，图像中间分隔后，进行左右视图的独立校正，分别得到图3和图4的图像。对二者进行特征点匹配，得到结果如图5所示。后续<strong>相对图像进行三维重建</strong>，不知道如何继续了，这个<strong>视差</strong>貌似不好处理。</p>
 <p><strong>注：上述过程采用的都是matlab 实现，利用自带的一些函数。曾尝试OPENCV，上手比较费劲。</strong></p>
 <img src="F:\笔记\img\闪电三维重建\虚拟双目原理示意图.jpg" style="zoom: 33%;" />
 
@@ -257,21 +275,23 @@
 <h4 id="多目标优化ART算法"><a href="#多目标优化ART算法" class="headerlink" title="多目标优化ART算法"></a>多目标优化ART算法</h4><p><img src="F:%5C%E7%AC%94%E8%AE%B0%5Cimg%5C%E9%97%AA%E7%94%B5%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%5C%E5%A4%9A%E7%9B%AE%E6%A0%87%E4%BC%98%E5%8C%96ART%E7%AE%97%E6%B3%95.png" alt=""></p>
 <p>这篇数学较多，难度还是比较大，这里只是取其重点，后续最好研读文章。</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -324,6 +344,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Brief："><span class="nav-number">1.</span> <span class="nav-text">Brief：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考论文："><span class="nav-number">2.</span> <span class="nav-text">参考论文：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#双站摄像资料重建闪电三维通道方法"><span class="nav-number">2.1.</span> <span class="nav-text">双站摄像资料重建闪电三维通道方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重建方法："><span class="nav-number">2.1.1.</span> <span class="nav-text">重建方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化角度"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">初始化角度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#匹配角度和利用匹配的角度重建闪电通道"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">匹配角度和利用匹配的角度重建闪电通道</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非对称等离子体弧温度场三维重建"><span class="nav-number">2.2.</span> <span class="nav-text">非对称等离子体弧温度场三维重建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像预处理"><span class="nav-number">2.2.1.</span> <span class="nav-text">图像预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#等离子体弧温度场的三维重建"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">等离子体弧温度场的三维重建</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#横向磁场下真空电弧运动形态三维重构研究"><span class="nav-number">2.3.</span> <span class="nav-text">横向磁场下真空电弧运动形态三维重构研究</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三维重构算法"><span class="nav-number">2.3.1.</span> <span class="nav-text">三维重构算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Radon变换"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">Radon变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中心切片算法"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">中心切片算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FBP算法"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">FBP算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ART法"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">ART法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#联合算法"><span class="nav-number">2.3.1.5.</span> <span class="nav-text">联合算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高功率激光焊接等离子体三维重建及能量传输研究"><span class="nav-number">2.4.</span> <span class="nav-text">高功率激光焊接等离子体三维重建及能量传输研究</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于改进ART算法的等离子体三维重建"><span class="nav-number">2.4.1.</span> <span class="nav-text">基于改进ART算法的等离子体三维重建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ART和SART"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">ART和SART</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#投影矩阵的降维计算"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">投影矩阵的降维计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多目标优化ART算法"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">多目标优化ART算法</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
